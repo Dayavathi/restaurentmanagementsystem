@@ -1,0 +1,312 @@
+package restaurant;
+import java.util.Scanner;
+import java.util.ArrayList;
+
+ class Food
+ {
+   public String Name;
+   public float Price;
+	
+   public Food()
+   {
+     this.Name=Name;
+     this.Price=Price;
+   }
+   
+ public void input()
+ {
+   Scanner bp=new Scanner(System.in);
+   System.out.println("Enter the name of the food");
+   Name=bp.nextLine();
+   System.out.println("Enter the Price of theFood");
+   Price=bp.nextFloat();
+ }
+ 
+ public void Payment()
+ {
+  System.out.println("Price" +Price);
+ }
+ public String detail() 
+ {
+  return Name+" "+Price;
+ }
+ public String getName()
+ {
+  return Name; 
+ }
+ public void setName(String Name)
+ {
+  
+ }
+ public void setPrice(float Price)
+ {
+
+}
+}
+ 
+class GuestOrder 
+{
+ public String IdTable;
+ ArrayList<Food> EatList=new ArrayList<Food>();
+ public float TotalPayment;
+	
+ public String getIdTable()
+ {
+  return IdTable;
+ }
+ public void setEatList(Food food)
+ {
+  EatList.add(food);
+ }
+ public void setTotalpayment(float TotalPayment) 
+ {
+  this.TotalPayment=TotalPayment;
+ }
+ public void input()
+ {
+  Scanner bp=new Scanner(System.in);
+  System.out.println("enter number table:");
+  IdTable=bp.nextLine();
+ }
+ public void print() 
+ {
+  System.out.println("-----------------");
+  System.out.println("number table:"+this.IdTable+" total payment:" +this.TotalPayment);
+  for(Food m:this.EatList) {
+   System.out.println("Selected Food is" +m.Name);
+ }
+ }
+	
+ }
+
+ class ManageFood 
+ {
+  ArrayList<Food> foodlist=new ArrayList<>();
+  ArrayList<GuestOrder> guestorder=new ArrayList<>();
+  Food Food;
+  public GuestOrder GuestOrder;
+  public int SelectFood;
+  public ManageFood()
+  {
+  
+  }
+ Scanner bp=new Scanner(System.in);
+	
+ public void bp() 
+ {
+   System.out.println("Enter number of food items add in menu");
+   int n=Integer.parseInt(bp.nextLine());
+   for (int i=0;i<n;i++) 
+   {
+   Food food =new Food();
+   food.input();
+   foodlist.add(food);
+  }
+ }
+ public void print()
+ {
+  for(int i=0;i<foodlist.size();i++) 
+  {
+   System.out.println((i+1)+"."+foodlist.get(i).detail());
+  }
+ }
+  
+  public void Price()
+  {
+   float PriceFood=0;
+   float Totalpayment=0;
+   int number;
+   GuestOrder guest=new GuestOrder();
+   guest.input();
+   guestorder.add(guest);
+   for(int i=0;i<10;i++)
+   {
+    System.out.println("select Food"+(i+1));
+    SelectFood=bp.nextInt();
+   
+    if(SelectFood==0)
+    {
+     guest.setTotalpayment(Totalpayment);
+     System.out.println("Total Payment");
+     System.out.println(Totalpayment);
+     System.out.println("Thank you , Visit Again");
+     break;
+    }
+    else 
+    {
+     System.out.println("Enter quantity of food ");
+     number=bp.nextInt();
+     Food food= foodlist.get(SelectFood-1);
+     guest.setEatList(food);
+     PriceFood=food.Price*number;
+    }
+    Totalpayment+=PriceFood;
+    System.out.println("Order finish");
+    System.out.println("Payment is"+i);
+    System.out.println(""+PriceFood);
+    System.out.println("Finish Order enter 0");
+   }
+  }
+   public void printOrder() 
+   {
+    for(int i=0; i<guestorder.size();i++)
+    {
+     guestorder.get(i).print();
+    }  
+   }
+   public void search() 
+   {
+    Scanner bp=new Scanner(System.in);
+    String idtable;
+    int up=0;
+    System.out.println("Enter table number payment");
+    idtable=bp.nextLine();
+    for(int i=0;i<guestorder.size();i++ )
+    {
+     if(guestorder.get(i).getIdTable().equalsIgnoreCase(idtable)) 
+     {
+     guestorder.get(i).print(); 
+     up++;
+    }
+    }
+    if(up==0) 
+    {
+     System.out.println("No table number"+idtable);
+    }
+  }
+   public void DelteFood()
+   {
+    String deletefood;
+    int up=0;
+    System.out.println("enter name of the food to delete");
+    deletefood=bp.nextLine();
+    
+    for(int i=0;i<foodlist.size();i++) 
+    {
+     if(foodlist.get(i).getName().equals(deletefood)) 
+     {
+      up++;
+      foodlist.remove(i);
+      System.out.println("deleted finish");
+      break;
+      }
+    }
+    if(up==0)
+    {
+     System.out.println(deletefood+ "Not Found");
+    }
+    }
+   }
+
+
+public class TestMain
+{
+ public static void main(String[] args) 
+ {
+  // TODO Auto-generated metho
+	 
+	  
+  ArrayList<Food> foodlist=new ArrayList<>();
+  ManageFood managefood=new ManageFood();
+  int select;
+  Scanner bp=new Scanner(System.in);
+  do
+  {
+    Menumain();
+    select=Integer.parseInt(bp.nextLine());
+   switch (select)
+   {
+   case 1:
+    do
+    {
+      MenuManageFood();
+      select=Integer.parseInt(bp.nextLine());
+     switch (select) 
+     {
+     case 1:
+      managefood.bp();
+      break;
+      
+     /* case 2:
+       managefood.print();
+       managefood.EditFood();
+       break;
+       */
+      case 2: 
+       managefood.print();
+       managefood.DelteFood();
+       break;
+       
+      case 3:
+       managefood.printOrder();
+       break;
+       
+      case 4:
+       managefood.search();
+       break;
+       
+      case 0:
+       System.out.println("back");
+       break;
+     
+       default:
+        break;
+     }
+     }
+    while(select !=0);
+     break;
+     case 2:
+     do
+     {
+     MenuOrder();
+      select=Integer.parseInt(bp.nextLine());
+     switch (select) 
+     {
+     case 1:
+      managefood.print();
+      managefood.Price();
+      break;
+     case 0:
+       System.out.println("back");
+       break;
+       default:
+        break;
+     }
+     
+     }
+     while(select!=0);
+     break;
+     default:
+      break;
+   }
+  
+   
+  }
+  while(select!=3);
+ }
+ static void MenuManageFood() 
+ {
+   System.out.println("---------Menu Manage Food--------");
+   System.out.println("0.Back to menu main");
+   System.out.println("1.Add food");
+   //System.out.println("2.Edit food");
+   System.out.println("2.Delete food");
+   System.out.println("----------------------");
+   System.out.println("select");
+ }
+  static void MenuOrder() 
+  {
+   System.out.println("---------Menu Order--------");
+   System.out.println("0.Back to menu main");
+   System.out.println("1.Print food and order");
+   System.out.println("----------------------");
+   System.out.println("select");
+  }
+  static void Menumain()
+  {
+   System.out.println("----WELCOME TO DAYA RESTAURANT--------");
+   System.out.println("1.Manage Food");
+   System.out.println("2.Manage Order");
+   System.out.println("3.Exit");
+  }
+}
